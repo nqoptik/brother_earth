@@ -25,7 +25,7 @@ bool checkResult(std::vector<cv::Point> centers, cv::Point2f centerCircle, float
 
 int main()
 {
-    std::string dirName = "input_cross_light_images/";
+    std::string dirName = "cross_light_images/";
     DIR* pDir;
     pDir = opendir(dirName.c_str());
     if (pDir == NULL)

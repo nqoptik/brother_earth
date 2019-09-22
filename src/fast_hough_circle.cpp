@@ -18,7 +18,7 @@ std::vector<cv::Vec3i> findStrictCircle(cv::Mat, std::vector<cv::Vec3i>);
 
 int main()
 {
-    std::string dirName = "input_hough_circle_images/";
+    std::string dirName = "hough_circle_images/";
     DIR* pDir;
     pDir = opendir(dirName.c_str());
     if (pDir == NULL)

@@ -12,7 +12,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 ## System dependencies
 find_package(OpenCV REQUIRED)
 
-## Declare a C++ executable
+## Declare C++ executables
 add_executable(cross_light_detection src/cross_light_detection.cpp)
 
 add_executable(fast_hough_circle src/fast_hough_circle.cpp)
