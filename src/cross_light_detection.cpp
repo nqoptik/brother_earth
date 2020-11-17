@@ -13,7 +13,7 @@ std::vector<cv::Point> findIntersects(cv::Mat, std::vector<cv::Vec4i>);
 void drawIntersects(cv::Mat, std::vector<cv::Point>);
 std::vector<std::vector<cv::Point>> clusterIntersects(std::vector<cv::Point>);
 std::vector<cv::Point> findCenterOfCluster(std::vector<std::vector<cv::Point>>, float);
-void drawResults(cv::Mat, std::vector<cv::Point>, float, int);
+void drawResults(cv::Mat, std::vector<cv::Point>, int);
 int distanceBox(cv::Point, cv::Point);
 int distanceEuclid(cv::Point, cv::Point);
 cv::Point intersectPoint(cv::Point, cv::Point, cv::Point, cv::Point);
@@ -77,7 +77,7 @@ void isDetected(bool& isSuccess, cv::Mat orgImg, cv::Point& point1, cv::Point& p
 {
     isSuccess = true;
     cv::Mat yellowImg;
-    cv::cvtColor(orgImg, yellowImg, CV_BGR2YCrCb);
+    cv::cvtColor(orgImg, yellowImg, cv::COLOR_BGR2YCrCb);
     yellowImg = yellowImg - cv::Scalar(0, 255, 255);
 
     ///Fix size image
@@ -87,7 +87,7 @@ void isDetected(bool& isSuccess, cv::Mat orgImg, cv::Point& point1, cv::Point& p
 
     ///Convert to hsv image
     cv::Mat hsvImg;
-    cv::cvtColor(resizeImg, hsvImg, CV_BGR2HSV);
+    cv::cvtColor(resizeImg, hsvImg, cv::COLOR_BGR2HSV);
 
     ///Choose v channel
     cv::Mat vImg;
@@ -97,7 +97,7 @@ void isDetected(bool& isSuccess, cv::Mat orgImg, cv::Point& point1, cv::Point& p
 
     ///Threshold v channel
     cv::Mat thresholdImg;
-    cv::threshold(vImg, thresholdImg, 120, 255, CV_THRESH_BINARY);
+    cv::threshold(vImg, thresholdImg, 120, 255, cv::THRESH_BINARY);
 
     ///Erode threshold image
     cv::Mat erodeImg;
@@ -165,7 +165,7 @@ void isDetected(bool& isSuccess, cv::Mat orgImg, cv::Point& point1, cv::Point& p
     cv::Mat blurImg;
     cv::medianBlur(orgImg, blurImg, 3);
 
-    cv::cvtColor(orgImg, blurImg, CV_RGB2HSV);
+    cv::cvtColor(orgImg, blurImg, cv::COLOR_RGB2HSV);
     std::vector<cv::Mat> channels;
     cv::split(blurImg, channels);
 
@@ -173,7 +173,7 @@ void isDetected(bool& isSuccess, cv::Mat orgImg, cv::Point& point1, cv::Point& p
 
     for (int i = 0; i < 3; i++)
     {
-        cv::threshold(channels[i], setThres[i], 150, 255, CV_THRESH_OTSU);
+        cv::threshold(channels[i], setThres[i], 150, 255, cv::THRESH_OTSU);
     }
     cv::bitwise_not(setThres[0], setThres[0]);
 
@@ -241,7 +241,7 @@ void drawLines(cv::Mat lineImg, std::vector<cv::Vec4i> lines)
 {
     for (unsigned int i = 0; i < lines.size(); i++)
     {
-        cv::line(lineImg, cv::Point(lines[i][0], lines[i][1]), cv::Point(lines[i][2], lines[i][3]), 255, 1, CV_AA);
+        cv::line(lineImg, cv::Point(lines[i][0], lines[i][1]), cv::Point(lines[i][2], lines[i][3]), 255, 1, cv::LINE_AA);
     }
 }
 
@@ -395,7 +395,7 @@ std::vector<cv::Point> findCenterOfCluster(std::vector<std::vector<cv::Point>> i
     return centers;
 }
 
-void drawResults(cv::Mat orgImg, std::vector<cv::Point> centers, float rate, int color)
+void drawResults(cv::Mat orgImg, std::vector<cv::Point> centers, int color)
 {
     for (unsigned int i = 0; i < centers.size(); i++)
     {
@@ -653,7 +653,7 @@ void processGetCirclesFindContours(cv::Mat originMat, cv::Mat cropOriginMat, std
 
     cv::Mat clone = originMat.clone();
 
-    cv::findContours(cropOriginMat, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+    cv::findContours(cropOriginMat, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
 
     std::vector<std::vector<cv::Point>> contour_after;
 
@@ -661,11 +661,11 @@ void processGetCirclesFindContours(cv::Mat originMat, cv::Mat cropOriginMat, std
     {
         cv::Mat test = cv::Mat::zeros(cropOriginMat.size(), CV_8UC1);
 
-        cv::drawContours(test, contours, i, cv::Scalar(255, 255, 255), CV_FILLED);
+        cv::drawContours(test, contours, i, cv::Scalar(255, 255, 255), cv::FILLED);
 
         cv::Mat binary;
 
-        cv::threshold(test, binary, vectorContourAreaValues[0], vectorContourAreaValues[1], CV_THRESH_BINARY);
+        cv::threshold(test, binary, vectorContourAreaValues[0], vectorContourAreaValues[1], cv::THRESH_BINARY);
 
         cv::Scalar mean_clone;
 

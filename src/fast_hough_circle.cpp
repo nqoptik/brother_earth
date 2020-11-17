@@ -76,7 +76,7 @@ int main()
 std::vector<cv::Vec3i> findCircle(cv::Mat orgImg)
 {
     cv::Mat hsvImg;
-    cv::cvtColor(orgImg, hsvImg, CV_BGR2HSV);
+    cv::cvtColor(orgImg, hsvImg, cv::COLOR_BGR2HSV);
 
     ///Just use only v channel
     cv::Mat vImg;

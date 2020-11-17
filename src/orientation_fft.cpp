@@ -112,7 +112,7 @@ std::vector<cv::Vec4i> findDirection(cv::Mat orgImg, std::vector<float>& centerA
     int width, height, step;
     int i, j, k;
 
-    cv::cvtColor(orgImg, img1, CV_BGR2GRAY);
+    cv::cvtColor(orgImg, img1, cv::COLOR_BGR2GRAY);
     cv::resize(img1, img1, cv::Size(img1.cols / 2, img1.rows / 2));
 
     // create new image for IFFT result
@@ -178,11 +178,11 @@ std::vector<cv::Vec4i> findDirection(cv::Mat orgImg, std::vector<float>& centerA
     q1.copyTo(tmp);
     q2.copyTo(q1);
     tmp.copyTo(q2);
-    cv::normalize(img2, img2, 0, 255, CV_MINMAX);
+    cv::normalize(img2, img2, 0, 255, cv::NORM_MINMAX);
 
     cv::Mat ucharMagImg;
 
-    cv::threshold(img2, ucharMagImg, 100, 255, CV_THRESH_BINARY);
+    cv::threshold(img2, ucharMagImg, 100, 255, cv::THRESH_BINARY);
 
     std::vector<cv::Vec4i> lines;
     cv::HoughLinesP(ucharMagImg, lines, 1, CV_PI / 180, 65, 40, 20);
