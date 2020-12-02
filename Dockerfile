@@ -1,4 +1,5 @@
-FROM ubuntu:focal
+# Build stage
+FROM ubuntu:focal AS build
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -19,8 +20,17 @@ COPY CMakeLists.txt .
 
 RUN cd build && cmake -DCMAKE_BUILD_TYPE=Release .. && make
 
-RUN rm -rf build/cross_light_images
-RUN rm -rf build/hough_circle_images
-RUN rm -rf build/rotated_images
-RUN rm -rf src
-RUN rm CMakeLists.txt
+# Production stage
+FROM ubuntu:focal AS production
+
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libfftw3-dev \
+    libopencv-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /root/brother_earth
+
+COPY --from=build /root/brother_earth/build build
+
+CMD [ "build/cross_light_detection" ]
